@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kalkulacja strączkowe</title>
+    <link rel="stylesheet" href="output.css" />
+
+    <!-- fonty -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="m-0 p-0 bg-top-agrar-green/10 flex justify-center font-body">
+    <div class="m-3 bg-white rounded-3xl container flex flex-col justify-start">
+      <div class="header m-3 flex justify-between">
+        <div class="text-2xl font-header font-bold flex justify-center items-center flex-1"><p>Kalkulator opłacalności roślin strączkowych</p></div>
+        <div class="h-full flex items-center justify-center">
+          <button id="reset" class="w-24 h-12 flex items-center justify-center border-top-agrar-green border-2 rounded-3xl text-2xl text-top-agrar-green hover:bg-top-agrar-green/25">Resetuj</button>
+        </div>
+      </div>
+      <div class="content">
+        <!-- TO ZOSTAJE -->
+        <div class="w-10/12 border-t-2 border-bg-info m-auto"></div>
+        <div id="transport"></div>
+        <div class="w-10/12 border-t-2 border-bg-info m-auto"></div>
+        <div id="zbior"></div>
+        <div class="w-10/12 border-t-2 border-bg-info m-auto"></div>
+      </div>
+    </div>
+  </body>
+  <script src="mainScript.js"></script>
+  <script src="calculationsScript.js"></script>
+</html>
+
+<!-- <div class="w-80 p-3 flex flex-col justify-start">
+  <div class="text-xl text-center mb-3">NAZWA SEKCJI</div>
+  <div class="">
+    <div class="mb-5 flex">
+      <input type="text" inputmode="numeric" pattern="[0-9]*" class="w-24 h-12 pl-2 text-xl border-2 border-bg-info rounded-3xl flex-1 hover:bg-bg-info/25" placeholder="podaj wartość x" />
+      <div class="ml-2 text-xl flex items-center">jednostka</div>
+    </div>
+    <div class="mb-5">
+      <div class="text-2xl text-center">Tu wpisz tekst do wyświetlenia, np. wynik:</div>
+      <div class="text-3xl mt-4 text-top-agrar-green text-center">wynik j<sup>2</sup></div>
+    </div>
+  </div>
+</div> -->
