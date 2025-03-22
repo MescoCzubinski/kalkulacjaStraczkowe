@@ -33,7 +33,7 @@ class CalculatorBlock {
         let checkboxInput = document.createElement("input");
         checkboxInput.type = "checkbox";
         checkboxInput.classList.add("mr-4");
-        checkboxInput.id = `${inputData.id.toLowerCase().replace("#", "").replace(/\s+/g, "-")}-checkbox`;
+        checkboxInput.id = `${inputData.id.toLowerCase().replaceAll("#", "").replaceAll(/\s+/g, "-")}-checkbox`;
 
         inputContainer.appendChild(checkboxInput);
       }
@@ -72,7 +72,7 @@ class CalculatorBlock {
     let resultValue = document.createElement("div");
     resultValue.classList.add("text-xl", "text-top-agrar-green", "text-center");
     resultValue.innerHTML = "podaj wartości";
-    resultValue.id = `${this.containerId.replace("#", "").replace(/\s+/g, "-")}-result`;
+    resultValue.id = `${this.containerId.replaceAll("#", "").replaceAll(/\s+/g, "-")}-result`;
 
     resultContainer.appendChild(resultText);
     resultContainer.appendChild(resultValue);
@@ -88,7 +88,7 @@ class CalculatorBlock {
 
       let checkboxInput = document.createElement("input");
       checkboxInput.type = "checkbox";
-      checkboxInput.id = `${this.containerId.replace("#", "").replace(/\s+/g, "-")}-checkbox`;
+      checkboxInput.id = `${this.containerId.replaceAll("#", "").replaceAll(/\s+/g, "-")}-checkbox`;
 
       checkboxContainer.appendChild(checkboxText);
       checkboxContainer.appendChild(checkboxInput);
@@ -96,11 +96,11 @@ class CalculatorBlock {
     }
 
     let containerHeader = document.createElement("div");
-    containerHeader.classList.add("flex", "w-full", "pl-10", "pr-10", "justify-between", "p-3");
+    containerHeader.classList.add("flex", "w-full", "sm:pl-14", "sm:pr-14", "justify-between", "p-3");
 
     let headerName = document.createElement("div");
-    headerName.classList.add("text-2xl", "font-bold");
-    headerName.textContent = this.containerId.replace("#", "").toUpperCase();
+    headerName.classList.add("text-2xl", "font-bold", "pt-1");
+    headerName.textContent = this.containerId.replaceAll("#", "").replaceAll("-", " ").toUpperCase();
 
     let headerButton = document.createElement("button");
     headerButton.classList.add("show-hide-button", "border-bg-info", "border-2", "rounded-2xl", "p-1", "text-lg");
@@ -151,24 +151,167 @@ class CalculatorBlock {
 }
 
 new CalculatorBlock(
-  "#transport",
+  "#przychody-z-plonu",
   [
-    { id: "liczba-km", name: "Podaj liczbę km", placeholder: "Podaj liczbę km", unit: "km" },
-    { id: "koszt-km", name: "Podaj koszt za ha", placeholder: "Podaj koszt za km", unit: "zł/km" },
+    { id: "zakladany-plon", name: "Zakładany plon:", placeholder: "", unit: "t/ha" },
+    { id: "cena-skupu", name: "Cena skupu:", placeholder: "", unit: "zł/t" },
   ],
-  "wynik:",
-  "zł",
-  "one-check",
+  "Wartość plonu:",
+  "zł/ha",
+  "no-check",
   (a, b) => a * b
+);
+new CalculatorBlock(
+  "#doplaty",
+  [
+    { id: "podst-wsp-doch", name: "Podstawowe wsparcie dochodów:", placeholder: "", unit: "zł/ha" },
+    { id: "redystr", name: "Płatność redystrybucyjna:", placeholder: "", unit: "zł/ha" },
+    { id: "stracz", name: "Płatność do strącz. na nasiona:", placeholder: "", unit: "zł/ha" },
+  ],
+  "Razem dopłaty:",
+  "zł/ha",
+  "all-check",
+  (a, b, c) => a + b + c
+);
+new CalculatorBlock(
+  "#ekoschematy",
+  [
+    { id: "miedzyplony", name: "Międzyplony lub wsiewki:", placeholder: "435.10", unit: "zł/ha" },
+    { id: "nawozenie-podst", name: "Plan nawożenia podst.:", placeholder: "87.02", unit: "zł/ha" },
+    { id: "nawozenie-wapnow", name: "Plan nawożenia z wapnow.:", placeholder: "261.06", unit: "zł/ha" },
+    { id: "struktura", name: "Zróżnicowana struktura upraw:", placeholder: "225.01", unit: "zł/ha" },
+    { id: "systemy", name: "Zróżnicowana struktura upraw:", placeholder: "251.94", unit: "zł/ha" },
+    { id: "sloma-gleba", name: "Wymieszanie słomy z glebą:", placeholder: "134.60", unit: "zł/ha" },
+    { id: "integrowana", name: "Integrowana Produkcja Roślin:", placeholder: "818.92", unit: "zł/ha" },
+    { id: "biologiczna", name: "Upr. biologiczna - ochrona:", placeholder: "300.06", unit: "zł/ha" },
+    { id: "nawozenie", name: "Upr. biologiczna - nawożenie:", placeholder: "75.01", unit: "zł/ha" },
+    { id: "kwalifik", name: "Kwalifik. mat. siewny:", placeholder: "", unit: "zł/ha" },
+  ],
+  "Razem ekoschematy:",
+  "zł/ha",
+  "all-check",
+  (a, b, c, d, e, f, g, h, i) => a + b + c + d + e + f + g + h + i
+);
+new CalculatorBlock(
+  "#badanie-gleby",
+  [
+    { id: "cena-badania", name: "Cena badania:", placeholder: "koszt 1 próbki", unit: "zł/próbkę" },
+    { id: "pow-badania", name: "Powierzch. badania:", placeholder: "pow. dla 1 próbki", unit: "ha" },
+    { id: "czestosc", name: "Częstość:", placeholder: "co ile lat badanie", unit: "lat" },
+  ],
+  "Koszt badania:",
+  "zł/ha/rok",
+  "no-check",
+  (a, b, c) => a / b / c
+);
+new CalculatorBlock(
+  "#wapno",
+  [
+    { id: "cena-wapna", name: "Cena wapna:", placeholder: "koszt 1 t wapna", unit: "zł/ha" },
+    { id: "dawka-ha-wapna", name: "Dawka na ha:", placeholder: "dawka na 1 ha", unit: "zł/ha" },
+    { id: "koszt-rozsiewu", name: "Koszt rozsiewu:", placeholder: "koszt rozsiewu na 1 ha", unit: "zł/ha" },
+    { id: "koszt-zaladunku-wapno", name: "Koszt załadunku:", placeholder: "koszt załadunku 1 t", unit: "zł/t" },
+    { id: "czestotliwosc-wapna", name: "Częstotliwość:", placeholder: "co ile lat", unit: "lat" },
+  ],
+  "Koszt wapnowania:",
+  "zł/ha",
+  "one-check",
+  (a, b, c, d, e) => (a * b + c + d * b) / e
+);
+new CalculatorBlock(
+  "#miedzyplon",
+  [
+    { id: "cena-nasion", name: "Cena nasion:", placeholder: "za 1 kg nas. międzypl.", unit: "zł/kg" },
+    { id: "dawka-ha-miedzyplon", name: "Dawka nasion na ha:", placeholder: "dawka nasion", unit: "kg/ha" },
+    { id: "koszt-siewu", name: "Koszt siewu:", placeholder: "koszt siewnika na 1 ha", unit: "zł/ha" },
+    { id: "czestotliwosc-miedzyplonu", name: "Częstotliwość:", placeholder: "co ile lat", unit: "lat" },
+  ],
+  "Koszt międzyplonu:",
+  "zł/ha",
+  "one-check",
+  (a, b, c, d) => (a * b + c) / d
+);
+new CalculatorBlock(
+  "#nawozy-naturlane",
+  [
+    { id: "cena-nawozu", name: "Cena nawozu:", placeholder: "cena 1 t naw. natur.", unit: "zł/t" },
+    { id: "dawka-ha-nawozu", name: "Dawka na ha:", placeholder: "dawka naw. na 1 ha", unit: "t, m³/ha" },
+    { id: "koszt-stosowania", name: "Koszt stosowania:", placeholder: "koszt rozl./rozrzuc/", unit: "zł/ha" },
+    { id: "koszt-zaladunku", name: "Koszt załadunku:", placeholder: "koszt załad./pomp.", unit: "zł/t, m³" },
+    { id: "czestotliowsc-nawozu", name: "Częstotliwość:", placeholder: "co ile lat", unit: "lat" },
+  ],
+  "Koszt naw. natur.:",
+  "zł/ha",
+  "one-check",
+  (a, b, c, d, e) => (a * b + c + d * b) / e
+);
+new CalculatorBlock(
+  "#zabiegi-jesienne",
+  [
+    { id: "uprawa-po-przedplonie", name: "Uprawa po przedplonie:", placeholder: "koszt upr. ściern.", unit: "zł/ha" },
+    { id: "uprawa-gleboka", name: "Uprawa głęboka:", placeholder: "koszty upr. głęb.", unit: "zł/ha" },
+    { id: "mulczowanie", name: "Mulczowanie międzyplonu:", placeholder: "koszt mulczow.", unit: "zł/ha" },
+  ],
+  "Koszt zab. jesiennych",
+  "zł/ha",
+  "all-check",
+  (a, b, c) => a + b + c
+);
+new CalculatorBlock(
+  "#glifosat",
+  [
+    { id: "herbicyd-glifosan", name: "Herbicyd z glifosatem:", placeholder: "cena glifosatu", unit: "zł/l" },
+    { id: "dawka-herbicydu", name: "Dawka herbicydu na ha:", placeholder: "dawka herb. z glif.", unit: "l/ha" },
+    { id: "adiuwant-glifosan", name: "Adiuwant do glifosatu:", placeholder: "cena adiuwanta", unit: "l, kg/ha" },
+    { id: "dawka-adiuwanta", name: "Dawka adiuwanta na ha:", placeholder: "dawka adiuwanta", unit: "l, kg/ha" },
+  ],
+  "Koszt glifosatu",
+  "zł/ha",
+  "one-check",
+  (a, b, c, d) => a * b + c * d
+);
+new CalculatorBlock(
+  "#material-siewny",
+  [
+    { id: "cena-nasion-material", name: "Cena nasion:", placeholder: "za 1 kg lub js.", unit: "zł/kg, js." },
+    { id: "dawka-nasion-na-ha", name: "Dawka nasion na ha:", placeholder: "dawka kg lub js. na ha", unit: "kg, js./ha" },
+    { id: "cena-szczepionki", name: "Cena szczepionki:", placeholder: "cena szcz. bakteryj.", unit: "zł/l, kg" },
+    { id: "dawka-szczepionki", name: "Dawka szczepionki:", placeholder: "dawka szczepionki", unit: "l, kg/100 kg" },
+    { id: "Cena zaprawy nasiennej", name: "Cena zaprawy nasiennej:", placeholder: "cena zaprawy", unit: "zł/l, kg" },
+    { id: "dawka-zaprawy", name: "Dawka zaprawy:", placeholder: "dawka zaprawy", unit: "l, kg/100 kg" },
+  ],
+  "Koszt nasion",
+  "zł/ha",
+  "one-check",
+  (a, b, c, d, e, f) => a * b + (c * d * b) / 100 + (e * f * b) / 100
+);
+new CalculatorBlock(
+  "#zabiegi-wiosenne",
+  [
+    { id: "plytka-uprawa", name: "Płytka uprawa:", placeholder: "koszt uprawy", unit: "zł/ha" },
+    { id: "wiosenne-mulczowanie", name: "Wiosenne mulczowanie:", placeholder: "koszt mulcz.", unit: "zł/ha" },
+    { id: "upr-przedsiewna", name: "Koszt upr. przedsiewnej:", placeholder: "koszt uprawy", unit: "zł/ha" },
+    { id: "koszt-siewu-wiosna", name: "Koszt siewu:", placeholder: "koszt siewu", unit: "zł/ha" },
+    { id: "koszt-opielania", name: "Koszt opielania:", placeholder: "koszt opielania", unit: "zł/ha" },
+    { id: "korekta-opielania", name: "Korekta opielania:", placeholder: "koszt opielania", unit: "zł/ha" },
+  ],
+  "Koszt uprawy wiosennej",
+  "zł/ha",
+  "all-check",
+  (a, b, c, d, e, f) => a + b + c + d + e + f
 );
 new CalculatorBlock(
   "#zbior",
   [
-    { id: "liczba-33333km", name: "Podaj liczbę km", placeholder: "Podaj liczbę km", unit: "km" },
-    { id: "koszt-3333km", name: "Podaj koszt za ha", placeholder: "Podaj koszt za km", unit: "zł/km" },
+    { id: "cena-koszenia", name: "Cena koszenia:", placeholder: "koszt kombajnu na ha", unit: "zł/ha" },
+    { id: "koszt-kilometrowki", name: "Koszt kilometrówki:", placeholder: "stawka za km wewn. gosp.", unit: "zł/km" },
+    { id: "dystans-transp", name: "Dystans transp. wewn.:", placeholder: "szacunk. dystans", unit: "km" },
+    { id: "cena-suszenia", name: "Cena suszenia:", placeholder: "koszt susz. tono-proc.", unit: "zł/t/%" },
+    { id: "wilgt-zbior", name: "Wilgotność podczas zbioru:", placeholder: "", unit: "%" },
+    { id: "wilgt-doc", name: "Wilgotność docelowa:", placeholder: "", unit: "%" },
   ],
-  "wynik:",
-  "zł",
-  "all-check",
-  (a, b) => a * b
+  "Koszt zbioru",
+  "zł/ha",
+  "no-check",
+  (a, b, c, d, e, f) => a + b * c + d * (e - f)
 );
