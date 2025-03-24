@@ -24,7 +24,7 @@ visitedElements.forEach((input) => {
 });
 document.addEventListener("click", (event) => {
   if (event.target.classList.contains("show-hide-button")) {
-    let content = event.target.parentElement.nextElementSibling; // Znajduje odpowiadającą sekcję
+    let content = event.target.parentElement.nextElementSibling;
     content.style.height = content.style.height === "0px" || !content.style.height ? content.scrollHeight + "px" : "0px";
     event.target.textContent = content.style.height === "0px" ? "Rozwiń" : "Zwiń";
   }

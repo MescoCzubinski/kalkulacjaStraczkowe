@@ -1,7 +1,8 @@
 class CalculatorBlock {
-  constructor(containerId, inputs, resultText, resultUnit, checkMode, calculation) {
+  constructor(containerId, containerName, inputs, resultText, resultUnit, checkMode, calculation) {
     this.container = document.querySelector(containerId);
     this.containerId = containerId.toLowerCase();
+    this.containerName = containerName;
     this.inputs = inputs;
     this.resultText = resultText;
     this.resultUnit = resultUnit;
@@ -100,7 +101,7 @@ class CalculatorBlock {
 
     let headerName = document.createElement("div");
     headerName.classList.add("text-2xl", "font-bold", "pt-1");
-    headerName.textContent = this.containerId.replaceAll("#", "").replaceAll("-", " ").toUpperCase();
+    headerName.textContent = this.containerName.toUpperCase();
 
     let headerButton = document.createElement("button");
     headerButton.classList.add("show-hide-button", "border-bg-info", "border-2", "rounded-2xl", "p-1", "text-lg");
@@ -152,6 +153,7 @@ class CalculatorBlock {
 
 new CalculatorBlock(
   "#przychody-z-plonu",
+  "przychody z plonu",
   [
     { id: "zakladany-plon", name: "Zakładany plon:", placeholder: "", unit: "t/ha" },
     { id: "cena-skupu", name: "Cena skupu:", placeholder: "", unit: "zł/t" },
@@ -163,10 +165,11 @@ new CalculatorBlock(
 );
 new CalculatorBlock(
   "#doplaty",
+  "dopłaty",
   [
-    { id: "podst-wsp-doch", name: "Podstawowe wsparcie dochodów:", placeholder: "", unit: "zł/ha" },
-    { id: "redystr", name: "Płatność redystrybucyjna:", placeholder: "", unit: "zł/ha" },
-    { id: "stracz", name: "Płatność do strącz. na nasiona:", placeholder: "", unit: "zł/ha" },
+    { id: "podst-wsp-doch", name: "Podstawowe wsparcie dochodów:", placeholder: "483.2", unit: "zł/ha" },
+    { id: "redystr", name: "Płatność redystrybucyjna:", placeholder: "168.79", unit: "zł/ha" },
+    { id: "stracz", name: "Płatność do strącz. na nasiona:", placeholder: "794.08", unit: "zł/ha" },
   ],
   "Razem dopłaty:",
   "zł/ha",
@@ -175,6 +178,7 @@ new CalculatorBlock(
 );
 new CalculatorBlock(
   "#ekoschematy",
+  "ekoschematy",
   [
     { id: "miedzyplony", name: "Międzyplony lub wsiewki:", placeholder: "435.10", unit: "zł/ha" },
     { id: "nawozenie-podst", name: "Plan nawożenia podst.:", placeholder: "87.02", unit: "zł/ha" },
@@ -190,10 +194,11 @@ new CalculatorBlock(
   "Razem ekoschematy:",
   "zł/ha",
   "all-check",
-  (a, b, c, d, e, f, g, h, i) => a + b + c + d + e + f + g + h + i
+  (a, b, c, d, e, f, g, h, i, j) => a + b + c + d + e + f + g + h + i + j
 );
 new CalculatorBlock(
   "#badanie-gleby",
+  "badanie gleby",
   [
     { id: "cena-badania", name: "Cena badania:", placeholder: "koszt 1 próbki", unit: "zł/próbkę" },
     { id: "pow-badania", name: "Powierzch. badania:", placeholder: "pow. dla 1 próbki", unit: "ha" },
@@ -206,6 +211,7 @@ new CalculatorBlock(
 );
 new CalculatorBlock(
   "#wapno",
+  "wapno",
   [
     { id: "cena-wapna", name: "Cena wapna:", placeholder: "koszt 1 t wapna", unit: "zł/ha" },
     { id: "dawka-ha-wapna", name: "Dawka na ha:", placeholder: "dawka na 1 ha", unit: "zł/ha" },
@@ -220,6 +226,7 @@ new CalculatorBlock(
 );
 new CalculatorBlock(
   "#miedzyplon",
+  "międzyplon",
   [
     { id: "cena-nasion", name: "Cena nasion:", placeholder: "za 1 kg nas. międzypl.", unit: "zł/kg" },
     { id: "dawka-ha-miedzyplon", name: "Dawka nasion na ha:", placeholder: "dawka nasion", unit: "kg/ha" },
@@ -233,6 +240,7 @@ new CalculatorBlock(
 );
 new CalculatorBlock(
   "#nawozy-naturlane",
+  "nawozy naturalne",
   [
     { id: "cena-nawozu", name: "Cena nawozu:", placeholder: "cena 1 t naw. natur.", unit: "zł/t" },
     { id: "dawka-ha-nawozu", name: "Dawka na ha:", placeholder: "dawka naw. na 1 ha", unit: "t, m³/ha" },
@@ -247,6 +255,7 @@ new CalculatorBlock(
 );
 new CalculatorBlock(
   "#zabiegi-jesienne",
+  "zabiegi jesienne",
   [
     { id: "uprawa-po-przedplonie", name: "Uprawa po przedplonie:", placeholder: "koszt upr. ściern.", unit: "zł/ha" },
     { id: "uprawa-gleboka", name: "Uprawa głęboka:", placeholder: "koszty upr. głęb.", unit: "zł/ha" },
@@ -259,6 +268,7 @@ new CalculatorBlock(
 );
 new CalculatorBlock(
   "#glifosat",
+  "glifosat",
   [
     { id: "herbicyd-glifosan", name: "Herbicyd z glifosatem:", placeholder: "cena glifosatu", unit: "zł/l" },
     { id: "dawka-herbicydu", name: "Dawka herbicydu na ha:", placeholder: "dawka herb. z glif.", unit: "l/ha" },
@@ -272,6 +282,7 @@ new CalculatorBlock(
 );
 new CalculatorBlock(
   "#material-siewny",
+  "materiał siewny",
   [
     { id: "cena-nasion-material", name: "Cena nasion:", placeholder: "za 1 kg lub js.", unit: "zł/kg, js." },
     { id: "dawka-nasion-na-ha", name: "Dawka nasion na ha:", placeholder: "dawka kg lub js. na ha", unit: "kg, js./ha" },
@@ -287,6 +298,7 @@ new CalculatorBlock(
 );
 new CalculatorBlock(
   "#zabiegi-wiosenne",
+  "zabiegi wiosenne",
   [
     { id: "plytka-uprawa", name: "Płytka uprawa:", placeholder: "koszt uprawy", unit: "zł/ha" },
     { id: "wiosenne-mulczowanie", name: "Wiosenne mulczowanie:", placeholder: "koszt mulcz.", unit: "zł/ha" },
@@ -302,6 +314,7 @@ new CalculatorBlock(
 );
 new CalculatorBlock(
   "#zbior",
+  "zbiór",
   [
     { id: "cena-koszenia", name: "Cena koszenia:", placeholder: "koszt kombajnu na ha", unit: "zł/ha" },
     { id: "koszt-kilometrowki", name: "Koszt kilometrówki:", placeholder: "stawka za km wewn. gosp.", unit: "zł/km" },
@@ -315,3 +328,49 @@ new CalculatorBlock(
   "no-check",
   (a, b, c, d, e, f) => a + b * c + d * (e - f)
 );
+document.querySelector("#podst-wsp-doch").value = "483.2";
+document.querySelector("#redystr").value = "168.79";
+document.querySelector("#stracz").value = "794.08";
+document.querySelector("#miedzyplony").value = "435.1";
+document.querySelector("#nawozenie-podst").value = "87.02";
+document.querySelector("#nawozenie-wapnow").value = "261.06";
+document.querySelector("#struktura").value = "225.01";
+document.querySelector("#systemy").value = "251.94";
+document.querySelector("#sloma-gleba").value = "134.6";
+document.querySelector("#integrowana").value = "818.92";
+document.querySelector("#biologiczna").value = "300.06";
+document.querySelector("#nawozenie").value = "75.01";
+
+const exclusionMap = {
+  "miedzyplony-checkbox": ["systemy-checkbox", "sloma-gleba-checkbox"],
+  "nawozenie-podst-checkbox": ["integrowana-checkbox"],
+  "nawozenie-wapnow-checkbox": ["integrowana-checkbox"],
+  "struktura-checkbox": [""],
+  "systemy-checkbox": ["miedzyplony-checkbox", "sloma-gleba-checkbox"],
+  "sloma-gleba-checkbox": ["miedzyplony-checkbox", "systemy-checkbox"],
+  "integrowana-checkbox": ["nawozenie-podst-checkbox", "nawozenie-wapnow-checkbox", "biologiczna-checkbox", "kwalifik-checkbox"],
+  "biologiczna-checkbox": ["integrowana-checkbox"],
+  "nawozenie-checkbox": [""],
+  "kwalifik-checkbox": ["integrowana-checkbox"],
+};
+
+document.addEventListener("change", (event) => {
+  if (!event.target.matches('input[type="checkbox"]')) return;
+
+  let ekoschematy = document.querySelectorAll("#miedzyplony-checkbox, #nawozenie-podst-checkbox, #nawozenie-wapnow-checkbox, #struktura-checkbox, #systemy-checkbox, #sloma-gleba-checkbox, #integrowana-checkbox, #biologiczna-checkbox, #nawozenie-checkbox, #kwalifik-checkbox");
+
+  ekoschematy.forEach((checkbox) => (checkbox.disabled = false));
+
+  ekoschematy.forEach((checkbox) => {
+    let excludedIds = exclusionMap[checkbox.id] || [];
+    excludedIds.forEach((excludedId) => {
+      if (!excludedId) return;
+      let excludedCheckbox = document.querySelector(`#${excludedId}`);
+      if (checkbox.checked && excludedCheckbox) {
+        excludedCheckbox.disabled = true;
+      }
+    });
+  });
+});
+
+//TODO: legenda w dopłatach "kliknij + aby uwzględnić w kalkulacji"
