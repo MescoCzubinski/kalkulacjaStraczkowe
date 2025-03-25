@@ -29,6 +29,10 @@
         <div id="doplaty"></div>
         <div class="w-11/12 border-t-2 border-bg-info m-auto"></div>
         <div id="ekoschematy"></div>
+        <div class="w-full flex justify-center text-2xl gap-2 mb-6 flex-wrap">
+          <div>Przychody razem:</div>
+          <div id="suma-przychodow" class="text-top-agrar-green">podaj wartości</div>
+        </div>
         <div class="w-11/12 border-t-2 border-b-2 border-black m-auto">
           <div class="text-2xl text-center p-2">KOSZTY</div>
         </div>
@@ -48,10 +52,29 @@
         <div class="w-11/12 border-t-2 border-bg-info m-auto"></div>
         <div id="zabiegi-wiosenne"></div>
         <div class="w-11/12 border-t-2 border-bg-info m-auto"></div>
+        <div id="nawozenie-mineralne"></div>
+        <div class="w-11/12 border-t-2 border-bg-info m-auto"></div>
+        <div id="adiuwant"></div>
+        <div class="w-11/12 border-t-2 border-bg-info m-auto"></div>
+        <div id="biopreparat"></div>
+        <div class="w-11/12 border-t-2 border-bg-info m-auto"></div>
         <div id="zbior"></div>
+        <div class="w-full flex justify-center text-2xl gap-2 mb-6 flex-wrap">
+          <div>Koszty razem:</div>
+          <div id="suma-kosztow" class="text-top-agrar-green">podaj wartości</div>
+        </div>
+        <div class="w-full flex justify-center text-2xl gap-2 mb-6 flex-wrap">
+          <div>Nadwyżka bezpośrednia:</div>
+          <div id="nadwyzka" class="text-top-agrar-green">podaj wartości</div>
+        </div>
+        <div class="w-full flex justify-center text-2xl gap-2 mb-6 flex-wrap">
+          <div>Plon minim. przy zał. kosztach:</div>
+          <div id="plon-min" class="text-top-agrar-green">podaj wartości</div>
+        </div>
       </div>
     </div>
   </body>
   <script src="mainScript.js"></script>
+  <script src="dynamicCalculationScript.js"></script>
   <script src="calculationsScript.js"></script>
 </html>

@@ -9,8 +9,11 @@ function format(inputString) {
     .replace(/(\d+\.\d{2})\d*/g, "$1");
 }
 document.addEventListener("input", (event) => {
-  const inputField = event.target;
-  inputField.value = format(inputField.value);
+  console.log();
+  if (!event.srcElement.classList.contains("textInput")) {
+    const inputField = event.target;
+    inputField.value = format(inputField.value);
+  }
 });
 const visitedElements = document.querySelectorAll("input, select");
 visitedElements.forEach((input) => {
