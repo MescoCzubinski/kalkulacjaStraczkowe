@@ -42,8 +42,8 @@ function recalculateSectionHeight() {
 
 const exclusionMap = {
   "miedzyplony-checkbox": ["systemy-checkbox", "sloma-gleba-checkbox"],
-  "nawozenie-podst-checkbox": ["integrowana-checkbox"],
-  "nawozenie-wapnow-checkbox": ["integrowana-checkbox"],
+  "nawozenie-podst-checkbox": ["integrowana-checkbox", "nawozenie-wapnow-checkbox"],
+  "nawozenie-wapnow-checkbox": ["integrowana-checkbox", "nawozenie-podst-checkbox"],
   "struktura-checkbox": [""],
   "systemy-checkbox": ["miedzyplony-checkbox", "sloma-gleba-checkbox"],
   "sloma-gleba-checkbox": ["miedzyplony-checkbox", "systemy-checkbox"],
