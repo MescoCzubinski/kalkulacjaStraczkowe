@@ -1,196 +1,3 @@
-class CalculatorBlock {
-  constructor(containerId, containerName, inputs, resultText, resultUnit, backgroundInfo, checkMode, calculation) {
-    this.container = document.querySelector(containerId);
-    this.containerId = containerId.toLowerCase();
-    this.containerName = containerName;
-    this.inputs = inputs;
-    this.resultText = resultText;
-    this.resultUnit = resultUnit;
-    this.backgroundInfo = backgroundInfo;
-    this.checkMode = checkMode;
-    this.calculation = calculation;
-    this.inputElements = [];
-
-    this.render();
-  }
-
-  render() {
-    let section = document.createElement("div");
-    section.classList.add("w-80", "p-3", "flex", "flex-col", "justify-start");
-
-    let inputsContainer = document.createElement("div");
-
-    this.inputs.forEach((inputData) => {
-      let inputWrapper = document.createElement("div");
-      inputWrapper.classList.add("mb-5");
-
-      let inputContainer = document.createElement("div");
-      inputContainer.classList.add("flex");
-
-      let inputName = document.createElement("div");
-      inputName.classList.add("text-xl", "pb-2", "pl-2");
-      inputName.textContent = inputData.name;
-
-      if (this.checkMode === "all-check") {
-        let checkboxInput = document.createElement("input");
-        checkboxInput.type = "checkbox";
-        checkboxInput.classList.add("mr-4");
-        checkboxInput.id = `${inputData.id.toLowerCase().replaceAll("#", "").replaceAll(/\s+/g, "-")}-checkbox`;
-
-        inputContainer.appendChild(checkboxInput);
-      }
-
-      let inputElement = document.createElement("input");
-      inputElement.type = "text";
-      inputElement.inputMode = "numeric";
-      inputElement.pattern = "[0-9]*";
-      inputElement.placeholder = inputData.placeholder;
-      inputElement.id = inputData.id.toLowerCase();
-      inputElement.classList.add("w-24", "h-12", "pl-2", "text-xl", "border-2", "border-bg-info", "rounded-3xl", "flex-1", "hover:bg-bg-info/25");
-
-      let unitElement = document.createElement("div");
-      unitElement.classList.add("ml-2", "text-xl", "flex", "items-center");
-      unitElement.textContent = inputData.unit;
-
-      inputContainer.appendChild(inputElement);
-      inputContainer.appendChild(unitElement);
-
-      inputWrapper.appendChild(inputName);
-      inputWrapper.appendChild(inputContainer);
-      inputsContainer.appendChild(inputWrapper);
-
-      this.inputElements.push(inputElement);
-    });
-
-    if (this.backgroundInfo !== "") {
-      let backgroundInfoContainer = document.createElement("div");
-      backgroundInfoContainer.classList.add("text-xl", "text-bg-info", "ml-2", "mb-5");
-      backgroundInfoContainer.textContent = this.backgroundInfo;
-      inputsContainer.appendChild(backgroundInfoContainer);
-    }
-
-    section.appendChild(inputsContainer);
-
-    let resultContainer = document.createElement("div");
-    resultContainer.classList.add("flex", "pl-2", "pr-2", "justify-between");
-
-    let resultText = document.createElement("div");
-    resultText.classList.add("text-xl", "text-center");
-    resultText.textContent = this.resultText;
-
-    let resultValue = document.createElement("div");
-    resultValue.classList.add("text-xl", "text-top-agrar-green", "text-center");
-    resultValue.innerHTML = "podaj wartości";
-    resultValue.id = `${this.containerId.replaceAll("#", "").replaceAll(/\s+/g, "-")}-result`;
-
-    resultContainer.appendChild(resultText);
-    resultContainer.appendChild(resultValue);
-    section.appendChild(resultContainer);
-
-    if (this.checkMode === "one-check") {
-      let checkboxContainer = document.createElement("div");
-      checkboxContainer.classList.add("flex", "flex-wrap", "h-fit", "items-center", "justify-between", "ml-2", "mt-4");
-
-      let checkboxText = document.createElement("div");
-      checkboxText.classList.add("text-xl", "text-left");
-      checkboxText.textContent = "Zatwierdź w kalkulacji:";
-
-      let checkboxInput = document.createElement("input");
-      checkboxInput.type = "checkbox";
-      checkboxInput.id = `${this.containerId.replaceAll("#", "").replaceAll(/\s+/g, "-")}-checkbox`;
-
-      checkboxContainer.appendChild(checkboxText);
-      checkboxContainer.appendChild(checkboxInput);
-      section.appendChild(checkboxContainer);
-    }
-
-    let containerHeader = document.createElement("div");
-    containerHeader.classList.add("flex", "w-full", "sm:pl-14", "sm:pr-14", "justify-between", "p-3");
-
-    let headerName = document.createElement("div");
-    headerName.classList.add("text-2xl", "font-bold", "pt-1");
-    headerName.textContent = this.containerName.toUpperCase();
-
-    let headerButton = document.createElement("button");
-    headerButton.classList.add("show-hide-button", "border-bg-info", "border-2", "rounded-2xl", "p-1", "text-lg");
-    headerButton.textContent = "Rozwiń";
-    containerHeader.appendChild(headerName);
-    containerHeader.appendChild(headerButton);
-
-    let containerContent = document.createElement("div");
-    containerContent.classList.add("show-hide-content", "flex", "flex-wrap", "w-full", "justify-center");
-    containerContent.appendChild(section);
-
-    this.container.appendChild(containerHeader);
-    this.container.appendChild(containerContent);
-
-    this.inputElements.forEach((input) => {
-      input.addEventListener("input", () => {
-        this.calculateResult();
-      });
-
-      let inputCheckboxElement = document.querySelector("#" + input.id + "-checkbox");
-      if (inputCheckboxElement) {
-        inputCheckboxElement.addEventListener("change", () => {
-          this.calculateResult();
-        });
-      }
-    });
-
-    this.calculateResult = () => {
-      let values = this.inputElements.map((input) => {
-        let inputCheckboxElement = document.querySelector("#" + input.id + "-checkbox");
-
-        if (inputCheckboxElement && inputCheckboxElement.checked) {
-          return Number(input.value) || 0;
-        } else if (!inputCheckboxElement) {
-          return Number(input.value) || 0;
-        }
-        return 0;
-      });
-
-      let result = this.calculation(...values);
-      if (result !== 0 && result !== Infinity && !isNaN(result)) {
-        resultValue.innerHTML = result.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ` ${this.resultUnit}`;
-      } else {
-        resultValue.innerHTML = "podaj wartości";
-      }
-      recalculateSectionHeight();
-    };
-  }
-}
-const exclusionMap = {
-  "miedzyplony-checkbox": ["systemy-checkbox", "sloma-gleba-checkbox"],
-  "nawozenie-podst-checkbox": ["integrowana-checkbox"],
-  "nawozenie-wapnow-checkbox": ["integrowana-checkbox"],
-  "struktura-checkbox": [""],
-  "systemy-checkbox": ["miedzyplony-checkbox", "sloma-gleba-checkbox"],
-  "sloma-gleba-checkbox": ["miedzyplony-checkbox", "systemy-checkbox"],
-  "integrowana-checkbox": ["nawozenie-podst-checkbox", "nawozenie-wapnow-checkbox", "biologiczna-checkbox", "kwalifik-checkbox"],
-  "biologiczna-checkbox": ["integrowana-checkbox"],
-  "nawozenie-checkbox": [""],
-  "kwalifik-checkbox": ["integrowana-checkbox"],
-};
-
-document.addEventListener("change", (event) => {
-  if (!event.target.matches('input[type="checkbox"]')) return;
-
-  let ekoschematy = document.querySelectorAll("#miedzyplony-checkbox, #nawozenie-podst-checkbox, #nawozenie-wapnow-checkbox, #struktura-checkbox, #systemy-checkbox, #sloma-gleba-checkbox, #integrowana-checkbox, #biologiczna-checkbox, #nawozenie-checkbox, #kwalifik-checkbox");
-
-  ekoschematy.forEach((checkbox) => (checkbox.disabled = false));
-
-  ekoschematy.forEach((checkbox) => {
-    let excludedIds = exclusionMap[checkbox.id] || [];
-    excludedIds.forEach((excludedId) => {
-      if (!excludedId) return;
-      let excludedCheckbox = document.querySelector(`#${excludedId}`);
-      if (checkbox.checked && excludedCheckbox) {
-        excludedCheckbox.disabled = true;
-      }
-    });
-  });
-});
-
 function mainContentLoad() {
   new CalculatorBlock(
     "#przychody-z-plonu",
@@ -207,7 +14,7 @@ function mainContentLoad() {
   );
   new CalculatorBlock(
     "#doplaty",
-    "dopłaty",
+    "dopłaty*",
     [
       { id: "podst-wsp-doch", name: "Podstawowe wsparcie dochodów:", placeholder: "483.2", unit: "zł/ha" },
       { id: "redystr", name: "Płatność redystrybucyjna:", placeholder: "168.79", unit: "zł/ha" },
@@ -215,13 +22,13 @@ function mainContentLoad() {
     ],
     "Razem dopłaty:",
     "zł/ha",
-    "kliknij + aby uwzględnić w kalkulacji",
+    "*domyślne wartości za rok 2024, wykasuj i wpisz aktualne. Kliknij + aby uwzględnić w kalkulacji",
     "all-check",
     (a, b, c) => a + b + c
   );
   new CalculatorBlock(
     "#ekoschematy",
-    "ekoschematy",
+    "ekoschematy*",
     [
       { id: "miedzyplony", name: "Międzyplony lub wsiewki:", placeholder: "435.10", unit: "zł/ha" },
       { id: "nawozenie-podst", name: "Plan nawożenia podst.:", placeholder: "87.02", unit: "zł/ha" },
@@ -236,7 +43,7 @@ function mainContentLoad() {
     ],
     "Razem ekoschematy:",
     "zł/ha",
-    "*domyślne wartości za rok 2024, wykasuj i wpisz aktualne",
+    "*domyślne wartości za rok 2024, wykasuj i wpisz aktualne. Kliknij + aby uwzględnić w kalkulacji",
     "all-check",
     (a, b, c, d, e, f, g, h, i, j) => a + b + c + d + e + f + g + h + i + j
   );
@@ -526,90 +333,3 @@ function mainContentLoad() {
     1
   );
 }
-
-mainContentLoad();
-document.querySelector("#reset").addEventListener("click", function () {
-  document.querySelector("#przychody-z-plonu").innerHTML = "";
-  document.querySelector("#doplaty").innerHTML = "";
-  document.querySelector("#ekoschematy").innerHTML = "";
-  document.querySelector("#badanie-gleby").innerHTML = "";
-  document.querySelector("#wapno").innerHTML = "";
-  document.querySelector("#miedzyplon").innerHTML = "";
-  document.querySelector("#nawozy-naturlane").innerHTML = "";
-  document.querySelector("#zabiegi-jesienne").innerHTML = "";
-  document.querySelector("#glifosat").innerHTML = "";
-  document.querySelector("#material-siewny").innerHTML = "";
-  document.querySelector("#zabiegi-wiosenne").innerHTML = "";
-  document.querySelector("#nawozenie-mineralne").innerHTML = "";
-  document.querySelector("#nawozenie-dolistne").innerHTML = "";
-  document.querySelector("#nawozenie-mineralne-zabieg").innerHTML = "";
-  document.querySelector("#adiuwant-zabieg").innerHTML = "";
-  document.querySelector("#biopreparat-zabieg").innerHTML = "";
-  document.querySelector("#adiuwant").innerHTML = "";
-  document.querySelector("#biopreparat").innerHTML = "";
-  document.querySelector("#zbior").innerHTML = "";
-  mainContentLoad();
-});
-
-function calculateSum() {
-  let przychodElements = ["#przychody-z-plonu-result", "#doplaty-result", "#ekoschematy-result"];
-
-  let przychod = przychodElements.reduce((sum, selector) => {
-    let el = document.querySelector(selector);
-    if (!el) return sum;
-    let value = parseFloat(el.textContent.replace("zł/ha", "").replace(",", ".").replace(/\s/g, "")) || 0;
-    return sum + value;
-  }, 0);
-
-  let kosztyElements = ["#badanie-gleby-result", "#wapno-result", "#miedzyplon-result", "#nawozy-naturlane-result", "#zabiegi-jesienne-result", "#glifosat-result", "#material-siewny-result", "#zabiegi-wiosenne-result", "#nawozenie-mineralne-result", "#nawozenie-mineralne-zabieg-result", "#nawozenie-dolistne-result", "#adiuwant-result", "#adiuwant-zabieg-result", "#biopreparat-result", "#biopreparat-zabieg-result", "#zbior-result"];
-
-  let koszt = kosztyElements.reduce((sum, selector) => {
-    let el = document.querySelector(selector);
-    if (!el) return sum;
-
-    let value = parseFloat(el.textContent.replace("zł/ha", "").replace(",", ".").replace(/\s/g, "")) || 0;
-
-    let checkbox = document.querySelector(selector.replace("result", "checkbox"));
-
-    if (!checkbox || checkbox.checked) {
-      return sum + value;
-    } else {
-      return sum;
-    }
-  }, 0);
-
-  if (!isNaN(przychod) && przychod !== 0 && przychod !== Infinity) {
-    document.querySelector("#suma-przychodow").textContent = przychod.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " zł/ha";
-  } else {
-    document.querySelector("#suma-przychodow").textContent = "podaj wartości";
-  }
-
-  if (!isNaN(koszt) && koszt !== 0 && koszt !== Infinity) {
-    document.querySelector("#suma-kosztow").textContent = koszt.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " zł/ha";
-  } else {
-    document.querySelector("#suma-kosztow").textContent = "podaj wartości";
-  }
-
-  let nadwyzka = przychod - koszt;
-  if (!isNaN(nadwyzka) && nadwyzka !== 0 && nadwyzka !== Infinity) {
-    document.querySelector("#nadwyzka").textContent = nadwyzka.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " zł/ha";
-  } else {
-    document.querySelector("#nadwyzka").textContent = "podaj wartości";
-  }
-
-  let plonMin = koszt / przychod;
-  if (!isNaN(plonMin) && plonMin !== 0 && plonMin !== Infinity) {
-    document.querySelector("#plon-min").textContent = plonMin.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " t/ha";
-  } else {
-    document.querySelector("#plon-min").textContent = "podaj wartości";
-  }
-}
-
-document.addEventListener("click", calculateSum);
-document.addEventListener("input", calculateSum);
-document.addEventListener("change", calculateSum);
-
-//nawożenie minerlane 1600 * 100 / 1000 -> 160
-//mineralne i doslistne: "nazwa nawozu"
-//ŚOR: "nazwa środka"
-//biopreparat: "nazwa biopreparatu"
