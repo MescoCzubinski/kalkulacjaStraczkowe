@@ -236,7 +236,7 @@ function mainContentLoad() {
     ],
     "Razem ekoschematy:",
     "zł/ha",
-    "",
+    "*domyślne wartości za rok 2024, wykasuj i wpisz aktualne",
     "all-check",
     (a, b, c, d, e, f, g, h, i, j) => a + b + c + d + e + f + g + h + i + j
   );
@@ -291,7 +291,7 @@ function mainContentLoad() {
     [
       { id: "cena-nawozu", name: "Cena nawozu:", placeholder: "cena 1 t naw. natur.", unit: "zł/t" },
       { id: "dawka-ha-nawozu", name: "Dawka na ha:", placeholder: "dawka naw. na 1 ha", unit: "t, m³/ha" },
-      { id: "koszt-stosowania", name: "Koszt stosowania:", placeholder: "koszt rozl./rozrzuc/", unit: "zł/ha" },
+      { id: "koszt-stosowania", name: "Koszt stosowania:", placeholder: "koszt rozrzuc./rozl.", unit: "zł/ha" },
       { id: "koszt-zaladunku", name: "Koszt załadunku:", placeholder: "koszt załad./pomp.", unit: "zł/t, m³" },
       { id: "czestotliowsc-nawozu", name: "Częstotliwość:", placeholder: "co ile lat", unit: "lat" },
     ],
@@ -319,7 +319,7 @@ function mainContentLoad() {
     "#glifosat",
     "glifosat",
     [
-      { id: "herbicyd-glifosan", name: "Herbicyd z glifosatem:", placeholder: "cena glifosatu", unit: "zł/l" },
+      { id: "herbicyd-glifosan", name: "Herbicyd z glifosatem:", placeholder: "cena herb. z glif.", unit: "zł/l" },
       { id: "dawka-herbicydu", name: "Dawka herbicydu na ha:", placeholder: "dawka herb. z glif.", unit: "l/ha" },
       { id: "adiuwant-glifosan", name: "Adiuwant do glifosatu:", placeholder: "cena adiuwanta", unit: "l, kg/ha" },
       { id: "dawka-adiuwanta", name: "Dawka adiuwanta na ha:", placeholder: "dawka adiuwanta", unit: "l, kg/ha" },
@@ -368,9 +368,9 @@ function mainContentLoad() {
     "#zbior",
     "zbiór",
     [
-      { id: "cena-koszenia", name: "Cena koszenia:", placeholder: "koszt kombajnu na ha", unit: "zł/ha" },
+      { id: "cena-koszenia", name: "Cena koszenia:", placeholder: "koszt kombajnu na 1 ha", unit: "zł/ha" },
       { id: "koszt-kilometrowki", name: "Koszt kilometrówki:", placeholder: "stawka za km wewn. gosp.", unit: "zł/km" },
-      { id: "dystans-transp", name: "Dystans transp. wewn.:", placeholder: "szacunk. dystans", unit: "km" },
+      { id: "dystans-transp", name: "Dystans transp. wewn.:", placeholder: "szacunkowy dystans", unit: "km" },
       { id: "cena-suszenia", name: "Cena suszenia:", placeholder: "koszt susz. tono-proc.", unit: "zł/t/%" },
       { id: "wilgt-zbior", name: "Wilgotność podczas zbioru:", placeholder: "", unit: "%" },
       { id: "wilgt-doc", name: "Wilgotność docelowa:", placeholder: "", unit: "%" },
@@ -383,9 +383,9 @@ function mainContentLoad() {
   );
   new CalculatorBlock(
     "#nawozenie-mineralne-zabieg",
-    "Zabieg nawożenie",
+    "zabieg nawożenia",
     [
-      { id: "koszt-nawozenia", name: "Koszt zabiegu nawożenia:", placeholder: "koszt nawożenia na ha", unit: "zł/ha" },
+      { id: "koszt-nawozenia", name: "Koszt zabiegu nawożenia:", placeholder: "koszt nawożenia na 1 ha", unit: "zł/ha" },
       { id: "czestotliwosc-nawozenia", name: "Częstotliwość zabiegu nawożenia:", placeholder: "ile razy na 1 ha", unit: "razy/ha" },
     ],
     "Koszt nawożenia",
@@ -398,7 +398,7 @@ function mainContentLoad() {
     "#adiuwant-zabieg",
     "Zabieg opryskiwanie",
     [
-      { id: "koszt-opryskiwania-ad", name: "Koszt zabiegu opryskiwania:", placeholder: "koszt nawożenia na ha", unit: "zł/ha" },
+      { id: "koszt-opryskiwania-ad", name: "Koszt zabiegu opryskiwania:", placeholder: "koszt oprysk. na 1 ha", unit: "zł/ha" },
       { id: "czestotliwosc-opryskiwania-ad", name: "Częstotliwość zabiegu opryskiwania:", placeholder: "ile razy na 1 ha", unit: "razy/ha" },
     ],
     "Koszt opryskiwania",
@@ -409,9 +409,9 @@ function mainContentLoad() {
   );
   new CalculatorBlock(
     "#biopreparat-zabieg",
-    "Zabieg opryskiwanie",
+    "Opryskiwanie biopreparatem",
     [
-      { id: "koszt-opryskiwania-bio", name: "Koszt zabiegu opryskiwania:", placeholder: "koszt nawożenia na ha", unit: "zł/ha" },
+      { id: "koszt-opryskiwania-bio", name: "Koszt zabiegu opryskiwania:", placeholder: "koszt stosowania na 1 ha", unit: "zł/ha" },
       { id: "czestotliwosc-opryskiwania-bio", name: "Częstotliwość zabiegu opryskiwania:", placeholder: "ile razy na 1 ha", unit: "razy/ha" },
     ],
     "Koszt opryskiwania",
@@ -435,12 +435,12 @@ function mainContentLoad() {
 
   new dynamicCalculatorBlock(
     "#nawozenie-mineralne",
-    "nawożenie mineralne",
+    "Nawozy mineralne",
     [
       {
         id: "koszt-jednostkowy-nm",
         name: "Koszt jednostkowy:",
-        placeholder: "koszt za t",
+        placeholder: "koszt za 1 t",
         unit: "zł/t",
       },
       {
@@ -450,18 +450,20 @@ function mainContentLoad() {
         unit: "kg/ha",
       },
     ],
+    "nazwa nawozu",
     "Koszt:",
     "zł",
-    (a, b) => a * b
+    (a, b) => a * b,
+    1000
   );
   new dynamicCalculatorBlock(
     "#nawozenie-dolistne",
-    "Nawożenie dolistne",
+    "Nawozy dolistne",
     [
       {
         id: "koszt-jednostkowy-dl",
         name: "Koszt jednostkowy:",
-        placeholder: "koszt za l, kg:",
+        placeholder: "koszt za 1 l, kg:",
         unit: "zł/l, kg",
       },
       {
@@ -471,9 +473,11 @@ function mainContentLoad() {
         unit: "l, kg/ha",
       },
     ],
+    "nazwa nawozu",
     "Koszt:",
     "zł",
-    (a, b) => a * b
+    (a, b) => a * b,
+    1
   );
   new dynamicCalculatorBlock(
     "#adiuwant",
@@ -492,9 +496,11 @@ function mainContentLoad() {
         unit: "l, kg/ha",
       },
     ],
+    "nazwa środka",
     "Koszt:",
     "zł",
-    (a, b) => a * b
+    (a, b) => a * b,
+    1
   );
   new dynamicCalculatorBlock(
     "#biopreparat",
@@ -503,7 +509,7 @@ function mainContentLoad() {
       {
         id: "koszt-jednostkowy-bio",
         name: "Koszt jednostkowy:",
-        placeholder: "koszt za l, kg:",
+        placeholder: "koszt za 1 l, kg:",
         unit: "zł/l, kg",
       },
       {
@@ -513,9 +519,11 @@ function mainContentLoad() {
         unit: "l, kg/ha",
       },
     ],
+    "nazwa biopreparatu",
     "Koszt:",
     "zł",
-    (a, b) => a * b
+    (a, b) => a * b,
+    1
   );
 }
 
@@ -533,6 +541,10 @@ document.querySelector("#reset").addEventListener("click", function () {
   document.querySelector("#material-siewny").innerHTML = "";
   document.querySelector("#zabiegi-wiosenne").innerHTML = "";
   document.querySelector("#nawozenie-mineralne").innerHTML = "";
+  document.querySelector("#nawozenie-dolistne").innerHTML = "";
+  document.querySelector("#nawozenie-mineralne-zabieg").innerHTML = "";
+  document.querySelector("#adiuwant-zabieg").innerHTML = "";
+  document.querySelector("#biopreparat-zabieg").innerHTML = "";
   document.querySelector("#adiuwant").innerHTML = "";
   document.querySelector("#biopreparat").innerHTML = "";
   document.querySelector("#zbior").innerHTML = "";
@@ -596,3 +608,8 @@ function calculateSum() {
 document.addEventListener("click", calculateSum);
 document.addEventListener("input", calculateSum);
 document.addEventListener("change", calculateSum);
+
+//nawożenie minerlane 1600 * 100 / 1000 -> 160
+//mineralne i doslistne: "nazwa nawozu"
+//ŚOR: "nazwa środka"
+//biopreparat: "nazwa biopreparatu"

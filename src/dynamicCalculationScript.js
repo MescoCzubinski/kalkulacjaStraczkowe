@@ -1,12 +1,14 @@
 class dynamicCalculatorBlock {
-  constructor(containerId, containerName, inputs, resultText, resultUnit, calculation) {
+  constructor(containerId, containerName, inputs, sectionName, resultText, resultUnit, calculation, divider) {
     this.container = document.querySelector(containerId);
     this.containerId = containerId.toLowerCase();
     this.containerName = containerName;
     this.inputs = inputs;
+    this.sectionName = sectionName;
     this.resultText = resultText;
     this.resultUnit = resultUnit;
     this.calculation = calculation;
+    this.divider = divider;
     this.sections = [];
     this.sectionsId = 0;
     this.inputElements = [];
@@ -27,7 +29,7 @@ class dynamicCalculatorBlock {
     let inputName = document.createElement("input");
     inputName.type = "text";
     inputName.id = this.containerName + "-" + this.sectionsId;
-    inputName.placeholder = "Nazwa";
+    inputName.placeholder = this.sectionName;
     inputName.classList.add("w-full", "h-12", "pl-2", "mb-5", "text-xl", "border-2", "border-bg-info", "rounded-3xl", "hover:bg-bg-info/25", "textInput");
     let buttonDelete = document.createElement("input");
     buttonDelete.type = "button";
@@ -95,7 +97,7 @@ class dynamicCalculatorBlock {
     const calculateResult = () => {
       let values = sectionInputs.map((input) => Number(input.value) || 0);
 
-      let result = values[0] * values[1];
+      let result = (values[0] * values[1]) / this.divider;
       if (result !== 0 && result !== Infinity && !isNaN(result)) {
         resultValue.innerHTML = result.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ` ${this.resultUnit}`;
       } else {
@@ -147,7 +149,7 @@ class dynamicCalculatorBlock {
 
     let buttonAdd = document.createElement("input");
     buttonAdd.type = "button";
-    buttonAdd.value = "dodaj kalkulator";
+    buttonAdd.value = "dodaj kolejny";
     buttonAdd.classList.add("flex", "justify-content", "w-48", "h-12", "mt-4", "ml-auto", "mr-auto", "text-xl", "text-bg-info", "border-2", "border-bg-info", "rounded-3xl", "hover:bg-bg-info/25", "add-button");
     containerContent.appendChild(buttonAdd);
 
@@ -171,6 +173,7 @@ class dynamicCalculatorBlock {
       let newSection = this.sections[this.sections.length - 1];
       this.container.querySelector(".show-hide-content > div").appendChild(newSection);
       this.calculateMainResult();
+      recalculateSectionHeight();
     });
   }
 
@@ -188,6 +191,7 @@ class dynamicCalculatorBlock {
       }
     });
 
+    total /= this.divider;
     let mainResultElement = document.getElementById(this.containerId.replace("#", "") + "-result");
     if (total !== Infinity && !isNaN(total) && total !== 0) {
       mainResultElement.textContent = total.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ` ${this.resultUnit}`;
