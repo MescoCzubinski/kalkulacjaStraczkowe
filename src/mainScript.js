@@ -9,7 +9,6 @@ function format(inputString) {
     .replace(/(\d+\.\d{2})\d*/g, "$1");
 }
 document.addEventListener("input", (event) => {
-  console.log();
   if (!event.srcElement.classList.contains("textInput")) {
     const inputField = event.target;
     inputField.value = format(inputField.value);

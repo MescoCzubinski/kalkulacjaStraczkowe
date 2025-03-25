@@ -18,6 +18,7 @@ class dynamicCalculatorBlock {
   sectionRender() {
     let section = document.createElement("div");
     section.classList.add("w-80", "p-3", "flex", "flex-col", "justify-start");
+    section.dataset.sectionId = this.sectionsId;
 
     let inputsContainer = document.createElement("div");
 
@@ -155,7 +156,7 @@ class dynamicCalculatorBlock {
     let sectionRenderText = document.createElement("div");
     sectionRenderText.textContent = this.resultText;
     let sectionRenderResult = document.createElement("div");
-    sectionRenderResult.id = this.containerId + "-result";
+    sectionRenderResult.id = this.containerId.replace("#", "") + "-result";
     sectionRenderResult.classList.add("text-top-agrar-green");
     sectionRenderResult.textContent = "podaj wartości";
     sectionResult.appendChild(sectionRenderText);
@@ -167,16 +168,18 @@ class dynamicCalculatorBlock {
 
     this.container.querySelector(".add-button").addEventListener("click", () => {
       this.sectionRender();
-      console.log("asad ");
+      let newSection = this.sections[this.sections.length - 1];
+      this.container.querySelector(".show-hide-content > div").appendChild(newSection);
+      this.calculateMainResult();
     });
   }
 
   calculateMainResult() {
     let total = 0;
-    this.sections.forEach((section, index) => {
+    this.sections.forEach((section) => {
       let inputValues = this.inputs.map((inputData) => {
-        let inputElement = document.getElementById(`${inputData.id.toLowerCase()}-${index}`);
-        if (inputElement) return Number(inputElement.value) || 0;
+        let inputElement = section.querySelector(`#${inputData.id.toLowerCase()}-${section.dataset.sectionId}`);
+        return inputElement ? Number(inputElement.value) || 0 : 0;
       });
 
       let subResult = this.calculation(...inputValues);
@@ -184,7 +187,8 @@ class dynamicCalculatorBlock {
         total += subResult;
       }
     });
-    let mainResultElement = document.getElementById(this.containerId + "-result");
+
+    let mainResultElement = document.getElementById(this.containerId.replace("#", "") + "-result");
     if (total !== Infinity && !isNaN(total) && total !== 0) {
       mainResultElement.textContent = total.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ` ${this.resultUnit}`;
     } else {

@@ -381,6 +381,45 @@ function mainContentLoad() {
     "no-check",
     (a, b, c, d, e, f) => a + b * c + d * (e - f)
   );
+  new CalculatorBlock(
+    "#nawozenie-mineralne-zabieg",
+    "Zabieg nawożenie",
+    [
+      { id: "koszt-nawozenia", name: "Koszt zabiegu nawożenia:", placeholder: "koszt nawożenia na ha", unit: "zł/ha" },
+      { id: "czestotliwosc-nawozenia", name: "Częstotliwość zabiegu nawożenia:", placeholder: "ile razy na 1 ha", unit: "razy/ha" },
+    ],
+    "Koszt nawożenia",
+    "zł/ha",
+    "",
+    "one-check",
+    (a, b) => a * b
+  );
+  new CalculatorBlock(
+    "#adiuwant-zabieg",
+    "Zabieg opryskiwanie",
+    [
+      { id: "koszt-opryskiwania-ad", name: "Koszt zabiegu opryskiwania:", placeholder: "koszt nawożenia na ha", unit: "zł/ha" },
+      { id: "czestotliwosc-opryskiwania-ad", name: "Częstotliwość zabiegu opryskiwania:", placeholder: "ile razy na 1 ha", unit: "razy/ha" },
+    ],
+    "Koszt opryskiwania",
+    "zł/ha",
+    "",
+    "one-check",
+    (a, b) => a * b
+  );
+  new CalculatorBlock(
+    "#biopreparat-zabieg",
+    "Zabieg opryskiwanie",
+    [
+      { id: "koszt-opryskiwania-bio", name: "Koszt zabiegu opryskiwania:", placeholder: "koszt nawożenia na ha", unit: "zł/ha" },
+      { id: "czestotliwosc-opryskiwania-bio", name: "Częstotliwość zabiegu opryskiwania:", placeholder: "ile razy na 1 ha", unit: "razy/ha" },
+    ],
+    "Koszt opryskiwania",
+    "zł/ha",
+    "",
+    "one-check",
+    (a, b) => a * b
+  );
   document.querySelector("#podst-wsp-doch").value = "483.2";
   document.querySelector("#redystr").value = "168.79";
   document.querySelector("#stracz").value = "794.08";
@@ -409,6 +448,27 @@ function mainContentLoad() {
         name: "Dawka na hektar:",
         placeholder: "ile na 1 ha",
         unit: "kg/ha",
+      },
+    ],
+    "Koszt:",
+    "zł",
+    (a, b) => a * b
+  );
+  new dynamicCalculatorBlock(
+    "#nawozenie-dolistne",
+    "Nawożenie dolistne",
+    [
+      {
+        id: "koszt-jednostkowy-dl",
+        name: "Koszt jednostkowy:",
+        placeholder: "koszt za l, kg:",
+        unit: "zł/l, kg",
+      },
+      {
+        id: "dawka-hektar-dl",
+        name: "Dawka na hektar:",
+        placeholder: "ile na 1 ha",
+        unit: "l, kg/ha",
       },
     ],
     "Koszt:",
@@ -489,33 +549,50 @@ function calculateSum() {
     return sum + value;
   }, 0);
 
-  let kosztyElements = ["#badanie-gleby-result", "#wapno-result", "#miedzyplon-result", "#nawozy-naturlane-result", "#zabiegi-jesienne-result", "#glifosat-result", "#material-siewny-result", "#zabiegi-wiosenne-result", "#nawozenie-mineralne-result", "#adiuwant-result", "#biopreparat-result", "#zbior-result"];
-
-  if (!isNaN(przychod) && przychod !== 0 && przychod !== Infinity) {
-    document.querySelector("#suma-przychodow").textContent = przychod.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " zł/ha";
-  }
+  let kosztyElements = ["#badanie-gleby-result", "#wapno-result", "#miedzyplon-result", "#nawozy-naturlane-result", "#zabiegi-jesienne-result", "#glifosat-result", "#material-siewny-result", "#zabiegi-wiosenne-result", "#nawozenie-mineralne-result", "#nawozenie-mineralne-zabieg-result", "#nawozenie-dolistne-result", "#adiuwant-result", "#adiuwant-zabieg-result", "#biopreparat-result", "#biopreparat-zabieg-result", "#zbior-result"];
 
   let koszt = kosztyElements.reduce((sum, selector) => {
     let el = document.querySelector(selector);
     if (!el) return sum;
+
     let value = parseFloat(el.textContent.replace("zł/ha", "").replace(",", ".").replace(/\s/g, "")) || 0;
-    return sum + value;
+
+    let checkbox = document.querySelector(selector.replace("result", "checkbox"));
+
+    if (!checkbox || checkbox.checked) {
+      return sum + value;
+    } else {
+      return sum;
+    }
   }, 0);
+
+  if (!isNaN(przychod) && przychod !== 0 && przychod !== Infinity) {
+    document.querySelector("#suma-przychodow").textContent = przychod.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " zł/ha";
+  } else {
+    document.querySelector("#suma-przychodow").textContent = "podaj wartości";
+  }
 
   if (!isNaN(koszt) && koszt !== 0 && koszt !== Infinity) {
     document.querySelector("#suma-kosztow").textContent = koszt.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " zł/ha";
+  } else {
+    document.querySelector("#suma-kosztow").textContent = "podaj wartości";
   }
 
   let nadwyzka = przychod - koszt;
   if (!isNaN(nadwyzka) && nadwyzka !== 0 && nadwyzka !== Infinity) {
     document.querySelector("#nadwyzka").textContent = nadwyzka.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " zł/ha";
+  } else {
+    document.querySelector("#nadwyzka").textContent = "podaj wartości";
   }
 
   let plonMin = koszt / przychod;
   if (!isNaN(plonMin) && plonMin !== 0 && plonMin !== Infinity) {
     document.querySelector("#plon-min").textContent = plonMin.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " t/ha";
+  } else {
+    document.querySelector("#plon-min").textContent = "podaj wartości";
   }
 }
 
 document.addEventListener("click", calculateSum);
 document.addEventListener("input", calculateSum);
+document.addEventListener("change", calculateSum);
